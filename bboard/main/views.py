@@ -113,3 +113,7 @@ class ChangeUserInfoView(SuccessMessageMixin, LoginRequiredMixin,
         if not queryset:
             queryset = self.get_queryset()
         return get_object_or_404(queryset, pk=self.user_id)
+
+#plug
+def by_rubrics(request, pk):
+    pass
