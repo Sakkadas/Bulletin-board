@@ -3,11 +3,17 @@ from django.contrib.auth.models import AbstractUser
 
 from .utilities import get_timestamp_path
 
+
 class AdvUser(AbstractUser):
     is_activated = models.BooleanField(default=True, db_index=True,
                                        verbose_name='Прошел активацию?')
     send_messages = models.BooleanField(default=True,
                                         verbose_name='Слать оповещения о новых комментариях?')
+
+    def delete(self, *args, **kwargs):
+        for bb in self.bb_set.all():
+            bb.delete()
+        super().delete(*args, **kwargs)
 
     class Meta(AbstractUser.Meta):
         pass
