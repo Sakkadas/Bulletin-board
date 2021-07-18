@@ -23,6 +23,8 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     # third-party
     'bootstrap4',
+    'django_cleanup',
+    'easy_thumbnails',
 ]
 
 MIDDLEWARE = [
@@ -92,6 +94,17 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'main.AdvUser'
 
-#Debug SMTP-server
+# Debug SMTP-server
 EMAIL_PORT = 1025
 
+# easy-thumbnails
+THUMBNAIL_ALIASES = {
+    '': {
+        'default': {
+            'size': (96, 96),
+            'crop': 'scale',
+        },
+    },
+}
+
+THUMBNAIL_BASEDIR = 'thumbnails'
