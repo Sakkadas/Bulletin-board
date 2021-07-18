@@ -14,6 +14,7 @@ urlpatterns = [
     path('accounts/password/change/', BBPasswordChangeView.as_view(), name='password_change'),
     path('accounts/profile/', profile, name='profile'),
     path('accounts/login/', BBLoginView.as_view(), name='login'),
+    path('<int:rubric_pk>/<int:pk>/', detail, name='detail'),
     path('<int:pk>/', by_rubrics, name='by_rubric'),
     path('<str:page>/', other_page, name='other'),
     path('', index, name='index'),
