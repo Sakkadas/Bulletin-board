@@ -1,5 +1,5 @@
 from django.core.signing import BadSignature
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.http import HttpResponse, Http404
 from django.template import TemplateDoesNotExist
@@ -16,7 +16,7 @@ from django.views.generic.base import TemplateView
 from django.core.paginator import Paginator
 from django.db.models import Q
 from .models import AdvUser, SubRubric, Bb
-from .forms import ChangeUserInfoForm, RegisterUserForm, SearchForm
+from .forms import ChangeUserInfoForm, RegisterUserForm, SearchForm, BbForm, AIFormSet
 from .utilities import signer
 
 
@@ -109,6 +109,25 @@ def profile_bb_detail(request, pk):
     ais = bb.additionalimage_set.all()
     context = {'bb': bb, 'ais': ais}
     return render(request, 'main/profile_bb_detail.html', context)
+
+
+@login_required
+def profile_bb_add(request):
+    if request.method == 'POST':
+        form = BbForm(request.POST, request.FILES)
+        if form.is_valid():
+            bb = form.save()
+            formset = AIFormSet(request.POST, request.FILES, instance=bb)
+            if formset.is_valid():
+                formset.save()
+                messages.add_message(request, messages.SUCCESS,
+                                     'Объявление добавлено')
+                return redirect('main:profile')
+    else:
+        form = BbForm(initial={'author': request.user.pk})
+        formset = AIFormSet()
+    context = {'form': form, 'formset': formset}
+    return render(request, 'main/profile_bb_add.html', context)
 
 
 class ChangeUserInfoView(SuccessMessageMixin, LoginRequiredMixin,
