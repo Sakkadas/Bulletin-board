@@ -95,6 +95,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+# static conf
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'main.AdvUser'
@@ -114,7 +117,8 @@ THUMBNAIL_ALIASES = {
 
 THUMBNAIL_BASEDIR = 'thumbnails'
 
-
-#CORS conf
+# CORS conf
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_URLS_REGEX = r'^/api/.*$'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
